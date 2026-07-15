@@ -4640,6 +4640,13 @@ data class ServerRoles(
 )
 
 @Serializable
+data class ServerRolesOverride(
+  val storage: Boolean? = null,
+  val proxy: Boolean? = null,
+  val names: Boolean? = null
+)
+
+@Serializable
 data class UserOperatorServers(
   val operator: ServerOperator?,
   val smpServers: List<UserServer>,
@@ -4792,7 +4799,7 @@ data class UserServer(
   val tested: Boolean? = null,
   val enabled: Boolean,
   val deleted: Boolean,
-  val roles: ServerRoles? = null
+  val roles: ServerRolesOverride = ServerRolesOverride(),
 ) {
   @Transient
   private val createdAt: Date = Date()
