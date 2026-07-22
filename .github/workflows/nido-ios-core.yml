@@ -1,0 +1,30 @@
+name: Nido - build iOS core (Nix)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios-core:
+    name: aarch64-darwin-ios core (Nix)
+    runs-on: macos-14
+    timeout-minutes: 360
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Cache Nix store
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Build simplex-chat core for iOS
+        run: |
+          nix build '.#aarch64-darwin-ios:lib:simplex-chat' --accept-flake-config -L
+
+      - name: Upload built core
+        uses: actions/upload-artifact@v4
+        with:
+          name: aarch64-darwin-ios-simplex-chat-core
+          path: result/
+          retention-days: 14
